@@ -11,6 +11,25 @@ Tuần này đi thẳng vào MCU/peripheral, không ôn lại C. Kết quả cu�
 
 Wokwi browser editor cho phép mở project ESP32 mới: https://wokwi.com/projects/new/esp32. Để chạy đúng source ESP-IDF bên dưới, cài ESP-IDF và Wokwi for VS Code, build local rồi chọn **Wokwi: Start Simulator**. Tài liệu Wokwi yêu cầu build trước và firmware path ESP-IDF trỏ đến `build/flasher_args.json`; board trong diagram phải khớp target chip.
 
+## Tuần 1 học gì, đọc ở đâu?
+
+Tuần 1 không phải chỉ là “chạy LED”. Phần chính là hiểu MCU architecture và boot flow; LED là bài thực hành để nối khái niệm với peripheral thật. Học theo thứ tự dưới đây, không cần đọc hết tài liệu dài:
+
+1. **ESP32 Datasheet** — mục 1 (tổng quan), mục 2.2–2.3 (pin), mục 3 (boot mode), mục 4.1 (CPU và memory), 4.2 (clock), 4.8.1 (GPIO), 4.10 (pin configuration). Đọc để biết chip có gì và giới hạn/chức năng của các chân.
+2. **ESP-IDF Application Startup Flow** — đọc phần high-level overview, “First Stage (ROM) Bootloader”, “Second Stage Bootloader” và “Running the Main Task”. Mục tiêu là tự vẽ luồng reset → bootloader → app startup → FreeRTOS main task → `app_main()`.
+3. **ESP32 Technical Reference Manual (TRM)** — đọc Chapter 3 “System and Memory” để hiểu memory map ở mức hệ thống; đọc Chapter 6 “IO MUX and GPIO Matrix” để hiểu GPIO/pin mux. Chỉ xem khái niệm và sơ đồ; chưa cần học thuộc register.
+4. **ESP-IDF GPIO API** — tra `gpio_config_t`, `gpio_config()` và `gpio_set_level()` khi đọc code trong `esp32_gpio/main/main.c`.
+
+Tài liệu chính thức:
+
+- [ESP32 Series Datasheet (PDF)](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf)
+- [ESP-IDF: Application Startup Flow](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/startup.html)
+- [ESP32 Technical Reference Manual (PDF)](https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf)
+- [ESP-IDF: GPIO API](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html)
+- [Wokwi: ESP-IDF simulation](https://docs.wokwi.com/vscode/esp-idf)
+
+Ghi chú về phạm vi: datasheet/TRM ở trên dành cho SoC **ESP32** trên board mô phỏng này. Khi đổi sang ESP32-S3/C3 hoặc MCU khác, phải dùng đúng datasheet/TRM của chip đó; không lấy memory map hay pin limits của ESP32 áp sang chip khác.
+
 ## Lý thuyết
 
 ### 1. MCU là một hệ thống trên chip

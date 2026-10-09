@@ -10,7 +10,7 @@ Thời lượng gợi ý: **24 tuần, 8–12 giờ/tuần**. Nếu chỉ có 4�
 
 | Tuần | Chủ đề | Đầu ra bắt buộc |
 |---|---|---|
-| 1 | MCU architecture, boot/memory overview, GPIO output, ESP-IDF build flow | Build và mô phỏng GPIO LED trên ESP32; xem `Week_01` |
+| 1 | MCU architecture, boot/memory overview, GPIO output, ESP-IDF build flow | Đọc sơ đồ khối ESP32, vẽ boot flow, build và mô phỏng LED. Bài học: [`01_MCU_Architecture_and_Boot/Week_01`](../01_MCU_Architecture_and_Boot/Week_01/README.md) |
 | 2 | GPIO input, pull-up/down, button, debounce và state machine | Button đổi trạng thái LED; giải thích active-low và bounce |
 | 3 | Clock tree, hardware timer, periodic tick, PWM | Timer task-free tạo chu kỳ; đo period và duty cycle |
 | 4 | Interrupt controller, GPIO interrupt, priority và ISR rules | ISR ngắn gửi event; foreground xử lý event |
@@ -34,6 +34,8 @@ Thời lượng gợi ý: **24 tuần, 8–12 giờ/tuần**. Nếu chỉ có 4�
 | 22 | Safety/reliability: watchdog, fail-safe, timeout, recovery | Fault matrix và behavior khi sensor/queue/UART lỗi |
 | 23 | System integration, requirements, interfaces, timing analysis | Architecture review và trade-off analysis |
 | 24 | Capstone và architecture review | Source, tests, diagrams, ADR, timing/RAM budget, demo và retrospective |
+
+> `00_Roadmap` chỉ chứa kế hoạch tổng thể và cách theo dõi tiến độ. Bài giảng, tài liệu đọc, bài tập và project được đặt trong thư mục chủ đề tương ứng, không đặt trong roadmap.
 
 ## Công việc lặp lại mỗi tuần
 
