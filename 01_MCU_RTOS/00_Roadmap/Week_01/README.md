@@ -1,115 +1,115 @@
-# Tuan 1 — MCU execution flow va GPIO output
+# Tuần 1 — Luồng thực thi MCU và GPIO output
 
-Tuan nay vao thang MCU/peripheral, khong on lai C. Ket qua cuoi tuan la ban build duoc ESP-IDF firmware, mo phong ESP32 DevKitC V4 trong Wokwi, dieu khien LED ngoai qua GPIO, va giai thich duoc duong di tu `app_main()` den chan GPIO.
+Tuần này đi thẳng vào MCU/peripheral, không ôn lại C. Kết quả cuối tuần là bạn build được firmware ESP-IDF, mô phỏng ESP32 DevKitC V4 trong Wokwi, điều khiển LED ngoài qua GPIO và giải thích được luồng từ `app_main()` đến chân GPIO.
 
-## Board va project ao
+## Board và project ảo
 
 - Board: **ESP32 DevKitC V4 / ESP32**.
 - Simulator: Wokwi.
-- Source/build: ESP-IDF project nam trong `esp32_gpio/`; Wokwi nap artifact da build tu `build/flasher_args.json`.
-- LED: GPIO18 -> dien tro 1 kOhm -> anode LED; cathode LED -> GND.
+- Source/build: project ESP-IDF nằm trong `esp32_gpio/`; Wokwi nạp artifact đã build từ `build/flasher_args.json`.
+- LED: GPIO18 → điện trở 1 kΩ → anode LED; cathode LED → GND.
 
-Wokwi browser editor cho phep mo project ESP32 moi: https://wokwi.com/projects/new/esp32. De chay dung source ESP-IDF ben duoi, cai ESP-IDF va Wokwi for VS Code, build local roi chon **Wokwi: Start Simulator**. Wokwi docs yeu cau build truoc va firmware path ESP-IDF tro den `build/flasher_args.json`; board trong diagram phai khop target chip.
+Wokwi browser editor cho phép mở project ESP32 mới: https://wokwi.com/projects/new/esp32. Để chạy đúng source ESP-IDF bên dưới, cài ESP-IDF và Wokwi for VS Code, build local rồi chọn **Wokwi: Start Simulator**. Tài liệu Wokwi yêu cầu build trước và firmware path ESP-IDF trỏ đến `build/flasher_args.json`; board trong diagram phải khớp target chip.
 
-## Ly thuyet
+## Lý thuyết
 
-### 1. MCU la mot he thong tren chip
+### 1. MCU là một hệ thống trên chip
 
-MCU gom CPU core, Flash, SRAM, clock/reset logic, interrupt controller va peripheral. CPU chay instruction; peripheral thuc hien I/O/timing/giao tiep; memory map gan dia chi cho cac vung RAM, Flash va peripheral registers. Moi dong chip co memory map, clock tree va pin mux rieng: tra datasheet/reference manual thay vi doan theo ten pin.
+MCU gồm CPU core, Flash, SRAM, clock/reset logic, interrupt controller và peripheral. CPU chạy instruction; peripheral thực hiện I/O/timing/giao tiếp; memory map gán địa chỉ cho các vùng RAM, Flash và peripheral registers. Mỗi dòng chip có memory map, clock tree và pin mux riêng: tra datasheet/reference manual thay vì đoán theo tên pin.
 
-### 2. Pin khong tu dong la GPIO
+### 2. Pin không tự động là GPIO
 
-Mot pad co the co nhieu chuc nang: GPIO, UART, SPI, I2C, PWM, ADC... GPIO driver/pin mux chon chuc nang. GPIO output co data latch/direction/enable logic va pad driver. GPIO input doc muc logic cua pad. Board pin label, SoC GPIO number, va function signal la ba khai niem co the khac nhau.
+Một pad có thể có nhiều chức năng: GPIO, UART, SPI, I2C, PWM, ADC... GPIO driver/pin mux chọn chức năng. GPIO output có data latch/direction/enable logic và pad driver. GPIO input đọc mức logic của pad. Board pin label, SoC GPIO number và function signal là ba khái niệm có thể khác nhau.
 
-### 3. Logic 0/1 va electrical limits
+### 3. Logic 0/1 và electrical limits
 
-GPIO la muc logic, khong phai nguon cap tai tuy y. GPIO co gioi han voltage/dong; LED can dien tro han dong. Wokwi mo phong logic va mot so hanh vi linh kien, nhung khong thay the datasheet hay do dong that. Trong project nay LED duoc noi qua dien tro 1 kOhm de mach co current limit.
+GPIO là mức logic, không phải nguồn cấp tải tùy ý. GPIO có giới hạn voltage/dòng; LED cần điện trở hạn dòng. Wokwi mô phỏng logic và một số hành vi linh kiện, nhưng không thay thế datasheet hay đo dòng thật. Trong project này, LED được nối qua điện trở 1 kΩ để mạch có current limit.
 
-### 4. Driver/HAL va memory-mapped register
+### 4. Driver/HAL và memory-mapped register
 
-Trong code project, `gpio_config()` cau hinh mode/pull/interrupt va `gpio_set_level()` doi muc logic. Day la API driver; driver phia duoi thao tac hardware registers va pin mux. Hoc theo hai lop: hieu register-level idea, roi dung API driver cua chip de code app. Khong viet dia chi register ESP32 bang phan doan.
+Trong code project, `gpio_config()` cấu hình mode/pull/interrupt và `gpio_set_level()` đổi mức logic. Đây là API driver; driver phía dưới thao tác hardware registers và pin mux. Học theo hai lớp: hiểu register-level idea, rồi dùng API driver của chip để code app. Không viết địa chỉ register ESP32 bằng phỏng đoán.
 
-### 5. Reset den `app_main()`
+### 5. Reset đến `app_main()`
 
-Sau reset, chip chay boot ROM/bootloader, nap app image tu Flash, startup code khoi tao runtime va goi entry point cua framework. ESP-IDF sau do goi `app_main()`. Trong ESP-IDF, `app_main()` duoc chay nhu mot FreeRTOS task; tuan nay ta chua thiet ke task/scheduler, chi dung task hien tai de thuc hien GPIO blink.
+Sau reset, chip chạy boot ROM/bootloader, nạp app image từ Flash, startup code khởi tạo runtime và gọi entry point của framework. ESP-IDF sau đó gọi `app_main()`. Trong ESP-IDF, `app_main()` chạy như một FreeRTOS task; tuần này ta chưa thiết kế task/scheduler, chỉ dùng task hiện tại để thực hiện GPIO blink.
 
-### 6. Config object va error handling
+### 6. Config object và error handling
 
-`gpio_config_t` mo ta nhom pin, mode, pull va interrupt. `ESP_ERROR_CHECK()` dung de fail-fast neu API tra error: khi init hardware that bai, tiep tuc chay voi trang thai khong ro rang se nguy hiem hon dung lai co log.
+`gpio_config_t` mô tả nhóm pin, mode, pull và interrupt. `ESP_ERROR_CHECK()` dùng để fail-fast nếu API trả error: khi init hardware thất bại, tiếp tục chạy với trạng thái không rõ ràng sẽ nguy hiểm hơn dừng lại có log.
 
-Trong sample, `vTaskDelay()` yield task hien tai trong mot so tick. Khoang thoi gian giua hai lan doi LED con bao gom thoi gian chay code/log; day la bai blink de hoc GPIO, chua phai periodic timing chinh xac. Tuan 3 se hoc hardware timer va jitter.
+Trong sample, `vTaskDelay()` yield task hiện tại trong một số tick. Khoảng thời gian giữa hai lần đổi LED còn bao gồm thời gian chạy code/log; đây là bài blink để học GPIO, chưa phải periodic timing chính xác. Tuần 3 sẽ học hardware timer và jitter.
 
-## Ke hoach hoc 6 buoi (90 phut/buoi)
+## Kế hoạch học 6 buổi (90 phút/buổi)
 
-### Buoi 1 — MCU architecture va datasheet (90 phut)
+### Buổi 1 — MCU architecture và datasheet (90 phút)
 
-- 25 phut: hoc muc 1 va ve CPU/Flash/RAM/peripheral/clock/reset.
-- 25 phut: mo Wokwi ESP32 board, tim GPIO18, GND, 3V3; phan biet SoC pin voi board pin label.
-- 25 phut: doc README project va lan theo `app_main()` -> `gpio_config()` -> `gpio_set_level()`.
-- 15 phut: tu ve boot flow tu reset den app.
+- 25 phút: học mục 1 và vẽ CPU/Flash/RAM/peripheral/clock/reset.
+- 25 phút: mở Wokwi ESP32 board, tìm GPIO18, GND, 3V3; phân biệt SoC pin với board pin label.
+- 25 phút: đọc README project và lần theo `app_main()` → `gpio_config()` → `gpio_set_level()`.
+- 15 phút: tự vẽ boot flow từ reset đến app.
 
-**Bai nop:** mot so do khoi MCU va 5 dong mo ta boot flow.
+**Bài nộp:** một sơ đồ khối MCU và 5 dòng mô tả boot flow.
 
-### Buoi 2 — GPIO, pin mux va mach LED (90 phut)
+### Buổi 2 — GPIO, pin mux và mạch LED (90 phút)
 
-- 25 phut: hoc muc 2-4; ve duong GPIO output latch -> pad -> resistor -> LED -> GND.
-- 20 phut: doc `diagram.json`; xac nhan GPIO18, anode/cathode va resistor.
-- 25 phut: du doan LED sang/tat theo muc GPIO va chu ky.
-- 20 phut: tra datasheet thong so current/voltage cua GPIO va LED (khong lay Wokwi lam thong so dien).
+- 25 phút: học mục 2–4; vẽ đường GPIO output latch → pad → resistor → LED → GND.
+- 20 phút: đọc `diagram.json`; xác nhận GPIO18, anode/cathode và resistor.
+- 25 phút: dự đoán LED sáng/tắt theo mức GPIO và chu kỳ.
+- 20 phút: tra datasheet thông số current/voltage của GPIO và LED (không lấy Wokwi làm thông số điện).
 
-**Bai nop:** pin map va ghi chu electrical limit can kiem tra khi chuyen sang board that.
+**Bài nộp:** pin map và ghi chú electrical limit cần kiểm tra khi chuyển sang board thật.
 
-### Buoi 3 — ESP-IDF build va Wokwi (90 phut)
+### Buổi 3 — ESP-IDF build và Wokwi (90 phút)
 
-- 20 phut: cai ESP-IDF theo official setup neu chua co.
-- 20 phut: mo project folder `esp32_gpio` trong VS Code co ESP-IDF extension.
-- 25 phut: build `idf.py build`; doc summary va artifact duoc tao.
-- 25 phut: mo Wokwi simulator va xem serial log/LED.
+- 20 phút: cài ESP-IDF theo official setup nếu chưa có.
+- 20 phút: mở project folder `esp32_gpio` trong VS Code có ESP-IDF extension.
+- 25 phút: build `idf.py build`; đọc summary và artifact được tạo.
+- 25 phút: mở Wokwi simulator và xem serial log/LED.
 
-Lenh chinh:
+Lệnh chính:
 
 ```powershell
 idf.py set-target esp32
 idf.py build
 ```
 
-Trong VS Code: **F1 -> Wokwi: Start Simulator**. Project da co `wokwi.toml` va `diagram.json`.
+Trong VS Code: **F1 → Wokwi: Start Simulator**. Project đã có `wokwi.toml` và `diagram.json`.
 
-**Bai nop:** log build thanh cong va mo ta artifact ELF/flash images.
+**Bài nộp:** log build thành công và mô tả artifact ELF/flash images.
 
-### Buoi 4 — Sua firmware co chu dich (90 phut)
+### Buổi 4 — Sửa firmware có chủ đích (90 phút)
 
-- Doi `LED_GPIO` tu 18 sang mot GPIO khac duoc board va simulator ho tro; cap nhat mach.
-- Doi chu ky 500 ms thanh 100 ms, sau do thanh 1 s; ghi nhan thay doi quan sat.
-- Doi output pattern thanh 3 blink nhanh + 1 blink dai.
-- Neu `gpio_config()` loi, xac dinh `ESP_ERROR_CHECK` lam gi va log nao can giu lai.
+- Đổi `LED_GPIO` từ 18 sang một GPIO khác được board và simulator hỗ trợ; cập nhật mạch.
+- Đổi chu kỳ 500 ms thành 100 ms, sau đó thành 1 s; ghi nhận thay đổi quan sát.
+- Đổi output pattern thành 3 blink nhanh + 1 blink dài.
+- Nếu `gpio_config()` lỗi, xác định `ESP_ERROR_CHECK` làm gì và log nào cần giữ lại.
 
-**Bai nop:** 3 thay doi nho, moi thay doi co mot ghi chu expected vs observed.
+**Bài nộp:** 3 thay đổi nhỏ, mỗi thay đổi có một ghi chú expected vs observed.
 
-### Buoi 5 — Hien tuong va gioi han mo phong (90 phut)
+### Buổi 5 — Hiện tượng và giới hạn mô phỏng (90 phút)
 
-- So sanh LED output voi UART log: co the serial log lam thay doi thoi diem quan sat.
-- Tim pin co chuc nang alternate; doc pin mux va peripheral ownership trong tai lieu chip.
-- Liet ke nhung thu simulator khong xac nhan: dien ap/dong that, EMI, silicon errata, timing vat ly, hardware wiring.
-- Them mot assertion/validation cho GPIO pin configuration truoc khi goi driver.
+- So sánh LED output với UART log: serial log có thể làm thay đổi thời điểm quan sát.
+- Tìm pin có chức năng alternate; đọc pin mux và peripheral ownership trong tài liệu chip.
+- Liệt kê những gì simulator không xác nhận: điện áp/dòng thật, EMI, silicon errata, timing vật lý, hardware wiring.
+- Thêm một assertion/validation cho GPIO pin configuration trước khi gọi driver.
 
-**Bai nop:** bang 2 cot: simulator co the xac nhan / phai xac nhan tren board that.
+**Bài nộp:** bảng 2 cột: simulator có thể xác nhận / phải xác nhận trên board thật.
 
-### Buoi 6 — Review va quiz (90 phut)
+### Buổi 6 — Review và quiz (90 phút)
 
-- 30 phut: lam bai tap trong `exercises/EXERCISES_AND_ANSWERS.md` ma chua xem dap an.
-- 20 phut: giai thich lai GPIO config struct tung field.
-- 20 phut: demo firmware va trinh bay boot-to-GPIO flow trong 5 phut.
-- 20 phut: lam quiz, danh dau chu de can hoc lai.
+- 30 phút: làm bài tập trong `exercises/EXERCISES_AND_ANSWERS.md` mà chưa xem đáp án.
+- 20 phút: giải thích lại GPIO config struct từng field.
+- 20 phút: demo firmware và trình bày boot-to-GPIO flow trong 5 phút.
+- 20 phút: làm quiz, đánh dấu chủ đề cần học lại.
 
 ## Code project
 
-Mo file `esp32_gpio/main/main.c`. Firmware cau hinh GPIO18 output, doi muc logic moi 500 ms, va ghi log. `app_main()` la entry cua ung dung ESP-IDF; driver GPIO cau hinh hardware va bao loi qua `esp_err_t`. Tuan nay muc tieu la MCU/peripheral flow, khong phai hoc lai syntax C.
+Mở file `esp32_gpio/main/main.c`. Firmware cấu hình GPIO18 output, đổi mức logic mỗi 500 ms và ghi log. `app_main()` là entry của ứng dụng ESP-IDF; driver GPIO cấu hình hardware và báo lỗi qua `esp_err_t`. Tuần này mục tiêu là MCU/peripheral flow, không phải học lại syntax C.
 
-## Tieu chi hoan thanh
+## Tiêu chí hoàn thành
 
-- Build project ESP-IDF thanh cong va mo phong LED toggle trong Wokwi.
-- Chi ra duoc MCU, board pin, SoC GPIO, LED, resistor, GND tren diagram.
-- Giai thich duoc mode/pull/intr_type/pin_bit_mask va `gpio_set_level()`.
-- Ve duoc boot flow va noi ro `app_main()` la FreeRTOS task trong ESP-IDF.
-- Tra loi dung it nhat 8/10 cau quiz; doc lai phan sai truoc khi sang tuan 2.
+- Build project ESP-IDF thành công và mô phỏng LED toggle trong Wokwi.
+- Chỉ ra được MCU, board pin, SoC GPIO, LED, resistor, GND trên diagram.
+- Giải thích được mode/pull/intr_type/pin_bit_mask và `gpio_set_level()`.
+- Vẽ được boot flow và nói rõ `app_main()` là FreeRTOS task trong ESP-IDF.
+- Trả lời đúng ít nhất 8/10 câu quiz; đọc lại phần sai trước khi sang tuần 2.

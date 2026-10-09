@@ -1,103 +1,103 @@
-# Bai tap va quiz — Tuan 1 MCU/GPIO
+# Bài tập và quiz — Tuần 1 MCU/GPIO
 
-Hay lam phan bai tap truoc khi doc dap an. Voi moi thay doi code, ghi expected result, sau do mo phong va so sanh actual result.
+Hãy làm phần bài tập trước khi đọc đáp án. Với mỗi thay đổi code, ghi expected result, sau đó mô phỏng và so sánh actual result.
 
-## Bai tap thuc hanh
+## Bài tập thực hành
 
-### Bai 1 — Thay doi GPIO
+### Bài 1 — Thay đổi GPIO
 
-Doi `LED_GPIO` tu GPIO18 sang GPIO19 va cap nhat `diagram.json`. Build lai, chay simulator. Ghi ro thay doi nao can dong bo giua source va wiring.
+Đổi `LED_GPIO` từ GPIO18 sang GPIO19 và cập nhật `diagram.json`. Build lại, chạy simulator. Ghi rõ thay đổi nào cần đồng bộ giữa source và wiring.
 
-**Dap an:** doi macro `LED_GPIO` trong `main.c`, doi endpoint `esp:18` thanh `esp:19` trong connection cua LED, build lai va restart/reload simulator. Neu chi sua source hoac chi sua wiring, LED se khong hoat dong nhu mong doi.
+**Đáp án:** đổi macro `LED_GPIO` trong `main.c`, đổi endpoint `esp:18` thành `esp:19` trong connection của LED, build lại và restart/reload simulator. Nếu chỉ sửa source hoặc chỉ sửa wiring, LED sẽ không hoạt động như mong đợi.
 
-### Bai 2 — Thay doi blink pattern
+### Bài 2 — Thay đổi blink pattern
 
-Sua code de LED sang 200 ms, tat 800 ms. Khong thay driver configuration.
+Sửa code để LED sáng 200 ms, tắt 800 ms. Không thay driver configuration.
 
-**Dap an tham khao:** thay vong lap thanh hai lan `gpio_set_level(LED_GPIO, 1/0)` va delay rieng 200/800 ms. Ghi chu: day la relative delay; log va overhead lam chu ky thuc khong chinh xac tuyet doi.
+**Đáp án tham khảo:** thay vòng lặp thành hai lần `gpio_set_level(LED_GPIO, 1/0)` và delay riêng 200/800 ms. Ghi chú: đây là relative delay; log và overhead làm chu kỳ thực không chính xác tuyệt đối.
 
-### Bai 3 — Hai GPIO output
+### Bài 3 — Hai GPIO output
 
-Them LED xanh tren GPIO19. Tao cau hinh rieng cho GPIO19 hoac gom ca hai pin vao `pin_bit_mask`; tao pattern luan phien: LED do sang khi LED xanh tat, roi doi trang thai.
+Thêm LED xanh trên GPIO19. Tạo cấu hình riêng cho GPIO19 hoặc gom cả hai pin vào `pin_bit_mask`; tạo pattern luân phiên: LED đỏ sáng khi LED xanh tắt, rồi đổi trạng thái.
 
-**Dap an:** moi pin phai duoc ket noi rieng va cau hinh la output. Co the dung mot `gpio_config_t` co mask `(1ULL << GPIO_NUM_18) | (1ULL << GPIO_NUM_19)` neu mode/pull/interrupt giong nhau. Ghi muc logic tung LED de tranh hai LED cung sang.
+**Đáp án:** mỗi pin phải được kết nối riêng và cấu hình là output. Có thể dùng một `gpio_config_t` có mask `(1ULL << GPIO_NUM_18) | (1ULL << GPIO_NUM_19)` nếu mode/pull/interrupt giống nhau. Ghi mức logic từng LED để tránh hai LED cùng sáng.
 
-### Bai 4 — Pull resistor va input
+### Bài 4 — Pull resistor và input
 
-Them button active-low tren GPIO4: mot dau button noi GPIO4, dau kia GND. Cau hinh GPIO4 input + pull-up; in serial khi button duoc nhan.
+Thêm button active-low trên GPIO4: một đầu button nối GPIO4, đầu kia GND. Cấu hình GPIO4 input + pull-up; in serial khi button được nhấn.
 
-**Dap an:** khi nha button, pull-up dua input len logic 1; khi nhan, button noi pin xuong GND nen input doc 0. Active-low nghia la muc 0 la asserted/pressed. Khong bat pull-down dong thoi voi pull-up.
+**Đáp án:** khi nhả button, pull-up đưa input lên logic 1; khi nhấn, button nối pin xuống GND nên input đọc 0. Active-low nghĩa là mức 0 là asserted/pressed. Không bật pull-down đồng thời với pull-up.
 
-### Bai 5 — Loi init
+### Bài 5 — Lỗi init
 
-Bo `ESP_ERROR_CHECK` va bo qua gia tri tra ve cua `gpio_config()`. Vi sao day la design xau? Them error path co log va dung firmware neu init that bai.
+Bỏ `ESP_ERROR_CHECK` và bỏ qua giá trị trả về của `gpio_config()`. Vì sao đây là design xấu? Thêm error path có log và dừng firmware nếu init thất bại.
 
-**Dap an:** neu init that bai, loop tiep tuc dieu khien pin chua duoc config, trong khi log co the lam nguoi debug tuong init thanh cong. Check `esp_err_t`; log GPIO/error code va dung hoac chuyen sang state fault ro rang. `ESP_ERROR_CHECK` la fail-fast shorthand.
+**Đáp án:** nếu init thất bại, loop tiếp tục điều khiển pin chưa được config, trong khi log có thể làm người debug tưởng init thành công. Check `esp_err_t`; log GPIO/error code và dừng hoặc chuyển sang state fault rõ ràng. `ESP_ERROR_CHECK` là fail-fast shorthand.
 
-### Bai 6 — Nhin qua GPIO driver
+### Bài 6 — Nhìn qua GPIO driver
 
-Lan theo declarations cua `gpio_config_t`, `gpio_config()` va `gpio_set_level()` trong ESP-IDF API. Ghi lai: field nao cau hinh pin, field nao chon mode, API nao dat output level, error type la gi.
+Lần theo declarations của `gpio_config_t`, `gpio_config()` và `gpio_set_level()` trong ESP-IDF API. Ghi lại: field nào cấu hình pin, field nào chọn mode, API nào đặt output level, error type là gì.
 
-**Dap an:** `pin_bit_mask` chon nhom GPIO; `mode` chon input/output; `pull_up_en`/`pull_down_en` bat pull; `intr_type` chon edge/level interrupt; `gpio_config()` apply configuration; `gpio_set_level()` set output 0/1; API tra `esp_err_t`.
+**Đáp án:** `pin_bit_mask` chọn nhóm GPIO; `mode` chọn input/output; `pull_up_en`/`pull_down_en` bật pull; `intr_type` chọn edge/level interrupt; `gpio_config()` apply configuration; `gpio_set_level()` set output 0/1; API trả `esp_err_t`.
 
-## Cau hoi ly thuyet va dap an
+## Câu hỏi lý thuyết và đáp án
 
-### 1. MCU khac board development kit the nao?
+### 1. MCU khác board development kit thế nào?
 
-**Dap an:** MCU la chip/SoC; development board la bo mach gom MCU, nguon, clock/reset circuitry, USB/debug interface va cac dau pin/linh kien phu.
+**Đáp án:** MCU là chip/SoC; development board là bo mạch gồm MCU, nguồn, clock/reset circuitry, USB/debug interface và các đầu pin/linh kiện phụ.
 
-### 2. Peripheral la gi? Cho ba vi du.
+### 2. Peripheral là gì? Cho ba ví dụ.
 
-**Dap an:** Khoi phan cung ben trong MCU thuc hien chuc nang ngoai CPU, vi du GPIO, timer, UART, SPI, I2C, ADC, DMA.
+**Đáp án:** Khối phần cứng bên trong MCU thực hiện chức năng ngoài CPU, ví dụ GPIO, timer, UART, SPI, I2C, ADC, DMA.
 
-### 3. Memory map la gi?
+### 3. Memory map là gì?
 
-**Dap an:** Bang phan bo cac dia chi CPU co the truy cap cho Flash, SRAM va cac peripheral/register region. Firmware/linker va chip manual phai thong nhat voi memory map.
+**Đáp án:** Bảng phân bổ các địa chỉ CPU có thể truy cập cho Flash, SRAM và các peripheral/register region. Firmware/linker và chip manual phải thống nhất với memory map.
 
-### 4. Pin pad co phai luon la GPIO khong?
+### 4. Pin pad có phải luôn là GPIO không?
 
-**Dap an:** Khong. Mot pad co the duoc mux sang GPIO hoac alternate function nhu UART/SPI/PWM/ADC. Phai chon dung pin mux va kiem tra board routing.
+**Đáp án:** Không. Một pad có thể được mux sang GPIO hoặc alternate function như UART/SPI/PWM/ADC. Phải chọn đúng pin mux và kiểm tra board routing.
 
-### 5. GPIO mode output nghia la gi?
+### 5. GPIO mode output nghĩa là gì?
 
-**Dap an:** Pad output driver duoc dieu khien boi output latch/peripheral; code co the dat muc logic. No khong co nghia pin cap du dong cho bat ky tai nao.
+**Đáp án:** Pad output driver được điều khiển bởi output latch/peripheral; code có thể đặt mức logic. Nó không có nghĩa pin cấp đủ dòng cho bất kỳ tải nào.
 
-### 6. Tai sao LED can dien tro?
+### 6. Tại sao LED cần điện trở?
 
-**Dap an:** LED can current limit; dien tro han dong va bao ve LED/GPIO. Tinh gia tri theo voltage supply, LED forward voltage, va dong cho phep; datasheet board/chip la tham chieu.
+**Đáp án:** LED cần current limit; điện trở hạn dòng và bảo vệ LED/GPIO. Tính giá trị theo voltage supply, LED forward voltage và dòng cho phép; datasheet board/chip là tham chiếu.
 
-### 7. `pin_bit_mask` bieu dien gi?
+### 7. `pin_bit_mask` biểu diễn gì?
 
-**Dap an:** Moi bit ung voi mot GPIO number; bit 1 trong mask chon pin duoc config. Vi field la 64-bit, sample dung `1ULL << GPIO_NUM_18`.
+**Đáp án:** Mỗi bit ứng với một GPIO number; bit 1 trong mask chọn pin được config. Vì field là 64-bit, sample dùng `1ULL << GPIO_NUM_18`.
 
-### 8. `gpio_config()` khac `gpio_set_level()` the nao?
+### 8. `gpio_config()` khác `gpio_set_level()` thế nào?
 
-**Dap an:** `gpio_config()` setup mode/pull/interrupt cho pin; `gpio_set_level()` dat output level sau khi pin da duoc cau hinh output.
+**Đáp án:** `gpio_config()` setup mode/pull/interrupt cho pin; `gpio_set_level()` đặt output level sau khi pin đã được cấu hình output.
 
-### 9. `ESP_ERROR_CHECK()` xu ly dieu gi?
+### 9. `ESP_ERROR_CHECK()` xử lý điều gì?
 
-**Dap an:** Kiem tra gia tri `esp_err_t`; neu loi, ghi log va abort thay vi am tham chay tiep voi hardware state khong ro rang.
+**Đáp án:** Kiểm tra giá trị `esp_err_t`; nếu lỗi, ghi log và abort thay vì âm thầm chạy tiếp với hardware state không rõ ràng.
 
-### 10. Wokwi co xac nhan dong dien/analog/EMI cua board that khong?
+### 10. Wokwi có xác nhận dòng điện/analog/EMI của board thật không?
 
-**Dap an:** Khong. Simulator tot cho logic firmware, wiring mo phong va quan sat output. Electrical limits, analog accuracy, EMI, silicon errata va timing vat ly can datasheet/measurement va hardware validation.
+**Đáp án:** Không. Simulator tốt cho logic firmware, wiring mô phỏng và quan sát output. Electrical limits, analog accuracy, EMI, silicon errata và timing vật lý cần datasheet/measurement và hardware validation.
 
-### 11. Vi sao `vTaskDelay(500 ms)` khong dam bao LED toggle moi chinh xac 500 ms?
+### 11. Vì sao `vTaskDelay(500 ms)` không đảm bảo LED toggle mỗi chính xác 500 ms?
 
-**Dap an:** Delay yield task theo tick; thoi gian code truoc delay, scheduler va tick resolution lam chu ky quan sat khac 500 ms. Dung hardware timer hoac periodic scheduling API va measurement de co timing yeu cau ro rang.
+**Đáp án:** Delay yield task theo tick; thời gian code trước delay, scheduler và tick resolution làm chu kỳ quan sát khác 500 ms. Dùng hardware timer hoặc periodic scheduling API và measurement để có timing yêu cầu rõ ràng.
 
-### 12. `app_main()` co phai la hardware reset vector khong?
+### 12. `app_main()` có phải là hardware reset vector không?
 
-**Dap an:** Khong. Boot ROM/bootloader/startup framework xu ly reset va runtime initialization; ESP-IDF goi `app_main()` sau do. `app_main()` chay nhu mot task trong ESP-IDF FreeRTOS integration.
+**Đáp án:** Không. Boot ROM/bootloader/startup framework xử lý reset và runtime initialization; ESP-IDF gọi `app_main()` sau đó. `app_main()` chạy như một task trong ESP-IDF FreeRTOS integration.
 
-### 13. Tai sao sample dung GPIO driver thay vi ghi dia chi register truc tiep?
+### 13. Tại sao sample dùng GPIO driver thay vì ghi địa chỉ register trực tiếp?
 
-**Dap an:** Driver dong goi register fields, pin configuration va chip-specific details; app code de doc hon va it phu thuoc register encoding. Register-level learning van can de hieu hardware, nhung ghi tay can dung reference manual, barriers/access semantics va errata.
+**Đáp án:** Driver đóng gói register fields, pin configuration và chip-specific details; app code dễ đọc hơn và ít phụ thuộc register encoding. Register-level learning vẫn cần để hiểu hardware, nhưng ghi tay cần đúng reference manual, barriers/access semantics và errata.
 
-### 14. Diem giua software simulation va hardware test?
+### 14. Điểm khác nhau giữa software simulation và hardware test?
 
-**Dap an:** Simulation co the xac nhan logic, state transition, driver interaction duoc model va regression nhanh. Hardware test xac nhan silicon, electrical conditions, board wiring, timing vat ly, power va peripheral behavior thuc.
+**Đáp án:** Simulation có thể xác nhận logic, state transition, driver interaction được model và regression nhanh. Hardware test xác nhận silicon, electrical conditions, board wiring, timing vật lý, power và peripheral behavior thực.
 
-## Quiz tu cham
+## Quiz tự chấm
 
-Khong xem dap an: ve boot flow; ve mach GPIO; mo ta 4 field cua `gpio_config_t`; giai thich active-high/active-low; noi ro gioi han Wokwi. Dat 8/10 equivalent (khong bo trong muc nao) truoc khi sang tuan 2.
+Không xem đáp án: vẽ boot flow; vẽ mạch GPIO; mô tả 4 field của `gpio_config_t`; giải thích active-high/active-low; nói rõ giới hạn Wokwi. Đạt 8/10 equivalent (không bỏ trống mục nào) trước khi sang tuần 2.
