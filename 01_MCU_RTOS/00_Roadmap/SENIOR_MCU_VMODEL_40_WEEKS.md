@@ -2,6 +2,8 @@
 
 Giả định bạn đã thành thạo C. Thời lượng tham khảo **40 tuần × 10–15 giờ/tuần**; đây là lộ trình xây năng lực và portfolio, không phải cam kết chức danh senior chỉ sau 40 tuần. Senior còn cần nhiều lần xử lý sự cố, review thiết kế và đo trên sản phẩm thật. Mỗi module đi theo thứ tự: **lý thuyết đầy đủ → quiz/design review → driver thanh ghi → bài tập/lab → test/evidence**. V-model chạy xuyên suốt từ tuần đầu.
 
+Lộ trình 40 tuần này lấy ESP32 làm nền. Để học đúng các chip từ ảnh tuyển dụng, đi tiếp [module STM32/NXP/SPC58/TC3xx](../10_MCU_Families_and_Portability/README.md) và [36 tuần mở rộng](../10_MCU_Families_and_Portability/07_LICH_MO_RONG_36_TUAN.md), không trộn địa chỉ/register của các họ chip.
+
 ## Giai đoạn 1 — Kiến trúc MCU và đọc tài liệu (tuần 1–6)
 
 | Tuần | Học và làm | Bằng chứng/verification |

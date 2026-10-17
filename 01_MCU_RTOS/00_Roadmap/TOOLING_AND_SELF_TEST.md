@@ -33,3 +33,5 @@ Chọn tool theo câu hỏi cần trả lời. **Build pass** chỉ chứng minh
 - [Espressif QEMU](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/tools/qemu.html), [Zephyr Twister](https://docs.zephyrproject.org/latest/develop/test/twister.html).
 
 Không cần mua mọi tool trước. Điểm bắt đầu đủ dùng là ESP-IDF + Wokwi + compiler native cho host test; board/logic analyzer chỉ cần khi đến yêu cầu có bằng chứng điện/timing.
+
+Khi chuyển họ chip, dùng [bảng chip/board/tool riêng](../10_MCU_Families_and_Portability/README.md). STM32CubeIDE/ST-LINK, NXP S32 Design Studio/debugger, SPC5Studio/PLS, AURIX Development Studio/miniWiggler là đường khởi đầu theo từng kit; TRACE32 là tùy chọn chuyên sâu khi có probe/license phù hợp. Tool host/CI/Doxygen hỗ trợ chung nhưng **không** thay thế target test.

@@ -4,7 +4,7 @@ Mục tiêu của workspace này là giúp bạn phát triển từ kỹ sư emb
 
 ## Thứ tự học đề xuất
 
-1. Bắt đầu với `01_MCU_RTOS`: [lộ trình Senior MCU theo V-model](01_MCU_RTOS/00_Roadmap/SENIOR_MCU_VMODEL_40_WEEKS.md) → [lý thuyết kiến trúc MCU](01_MCU_RTOS/01_MCU_Architecture_and_Boot/README.md) → trắc nghiệm → driver thanh ghi → bài tập (bỏ qua phần ôn tập C).
+1. Bắt đầu với `01_MCU_RTOS`: [lộ trình Senior MCU theo V-model](01_MCU_RTOS/00_Roadmap/SENIOR_MCU_VMODEL_40_WEEKS.md) → [lý thuyết kiến trúc MCU](01_MCU_RTOS/01_MCU_Architecture_and_Boot/README.md) → trắc nghiệm → driver thanh ghi → bài tập → [mở rộng đa chip STM32/NXP/SPC58/TC3xx](01_MCU_RTOS/10_MCU_Families_and_Portability/README.md) (bỏ qua phần ôn tập C).
 2. Học `02_Linux_CPP` để mở rộng sang Modern C++, Linux, concurrency, testing và debugging.
 3. Học `00_SA_Core` song song từ sớm; áp dụng từng chủ đề vào lab và project MCU.
 4. Đi sâu vào `03_AUTOSAR` nếu mục tiêu chính là automotive/ECU architecture.

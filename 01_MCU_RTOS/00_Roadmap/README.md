@@ -2,6 +2,8 @@
 
 **Nếu mục tiêu là Senior MCU Engineer và làm đầy đủ theo V-model:** bắt đầu tại [lộ trình 40 tuần](SENIOR_MCU_VMODEL_40_WEEKS.md), áp dụng [quy trình V-model](VMODEL_PROCESS.md), sau đó học [module kiến trúc MCU, thanh ghi và boot](../01_MCU_Architecture_and_Boot/README.md). [Bảng tool tự test](TOOLING_AND_SELF_TEST.md) cho biết dùng gì để chứng minh từng loại yêu cầu. Bảng 24 tuần dưới đây là lộ trình nền tảng cũ; lộ trình 40 tuần đi sâu hơn và có gate V-model.
 
+**Sau nền tảng ESP32:** [module đa chip](../10_MCU_Families_and_Portability/README.md) lọc kỹ năng từ ảnh tuyển dụng và mở rộng sang STM32H753, NXP S32K344, ST SPC584B và Infineon TC375. [Lịch 36 tuần tiếp nối](../10_MCU_Families_and_Portability/07_LICH_MO_RONG_36_TUAN.md) đưa tổng lộ trình tham khảo lên 76 tuần; mỗi chip đi hết một vòng V-model.
+
 ## Kết quả cuối cùng
 
 Sau lộ trình này, bạn có thể đọc datasheet/reference manual, giải thích luồng boot và memory map, viết firmware C có module, dùng peripheral/interrupt, tạo ứng dụng RTOS an toàn hơn, debug lỗi timing/concurrency, và trình bày kiến trúc bằng sơ đồ + ADR + kết quả test.
