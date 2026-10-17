@@ -1,33 +1,36 @@
-# 01 — Kiến trúc MCU và quy trình khởi động
+# 01 — Kiến trúc MCU, thanh ghi và boot (ESP32)
 
-Đây là thư mục học phần đầu tiên, không phải thư mục trống. Bắt đầu tại [`Week_01/README.md`](Week_01/README.md): bài học giải thích MCU/SoC, CPU–memory–peripheral, reset/boot đến `app_main()`, và GPIO LED đầu tiên. Mã ESP-IDF và mạch Wokwi nằm ngay trong `Week_01/esp32_gpio/`.
+Đích của học phần là tự đọc datasheet/TRM để thiết kế, cài đặt và kiểm thử một driver thanh ghi nhỏ; giải thích được CPU, bộ nhớ, bus, clock, interrupt, peripheral và luồng boot. Thời lượng hợp lý: **4–6 tuần × 8–12 giờ/tuần**. Đây là nền tảng để đi tiếp RTOS; không có phần ôn cú pháp C.
 
-## Đọc theo thứ tự
+## Đi theo đúng thứ tự
 
-1. **ESP32 Series Datasheet** — đọc mục 1 (tổng quan), 2 (pin), 3 (boot configuration), 4.1 (CPU và memory), 4.2 (clock), 4.8.1 (GPIO) và 4.10 (pin configuration). Đây là tài liệu chính để hiểu đúng chip ESP32; không cần đọc hết datasheet trong tuần 1.
-2. **ESP32 Technical Reference Manual (TRM)** — đọc Chapter 3 “System and Memory” để xem address map; đọc Chapter 6 “IO MUX and GPIO Matrix” để hiểu đường từ GPIO đến pad và peripheral. Chỉ tra phần cần thiết, chưa cần học thuộc register.
-3. **ESP-IDF Application Startup Flow** — đọc phần tổng quan, ROM bootloader, second-stage bootloader và “Running the Main Task” để nối boot flow đến `app_main()`.
-4. **ESP-IDF GPIO API** — tra `gpio_config_t`, `gpio_config()` và `gpio_set_level()` khi làm lab.
+1. **Lý thuyết:** đọc lần lượt toàn bộ mục 01–06 dưới đây. Mỗi mục có khái niệm, điều phải giải thích được và chỗ cần tra trong tài liệu chip.
+2. **Trắc nghiệm:** làm [`07_TRAC_NGHIEM.md`](theory/07_TRAC_NGHIEM.md) trước; sau đó tự chấm bằng [`08_DAP_AN.md`](theory/08_DAP_AN.md). Đạt ít nhất 85% và giải thích được câu sai.
+3. **Driver thanh ghi:** đọc [`register_gpio/README.md`](register_gpio/README.md), lần theo register map, build thư viện GPIO có input/output, pull, đọc mức, set/clear và deinit. Chạy Wokwi cùng bài test MMIO trên host.
+4. **Bài tập:** làm [`09_BAI_TAP.md`](theory/09_BAI_TAP.md), nộp bằng chứng theo V-model.
 
-## Tài liệu chính thức
+| Thứ tự | Nội dung | Đầu ra bắt buộc |
+|---|---|---|
+| 01 | [CPU, SoC và kiến trúc hệ thống](theory/01_CPU_SOC_KIEN_TRUC.md) | Sơ đồ CPU–bus–memory–peripheral; giải thích exception vs task |
+| 02 | [Thanh ghi, memory map và bus](theory/02_THANH_GHI_MEMORY_BUS.md) | Register map GPIO18, mô tả R/W, RO, WO, W1TS/W1TC |
+| 03 | [Clock, reset, boot và linker](theory/03_CLOCK_RESET_BOOT.md) | Boot flow và cây clock mức hệ thống, giải thích ELF/Flash |
+| 04 | [Interrupt, ISR, DMA](theory/04_NGAT_DMA.md) | Sơ đồ peripheral → interrupt matrix → CPU → ISR → task |
+| 05 | [Peripheral, GPIO và điện](theory/05_NGOAI_VI_GPIO.md) | Pin map, tín hiệu GPIO đến pad, giới hạn điện |
+| 06 | [Timing, RTOS và kiến trúc driver](theory/06_TIMING_RTOS_DRIVER.md) | Timing/error/ownership contract cho driver |
+| 07–08 | [Đề trắc nghiệm](theory/07_TRAC_NGHIEM.md) và [đáp án](theory/08_DAP_AN.md) | ≥85%, giải thích bằng chứng trong TRM |
+| Lab | [Thư viện GPIO qua thanh ghi](register_gpio/README.md) | Build ESP-IDF, chạy Wokwi, host test, review register writes |
+| Cuối | [Bài tập và hồ sơ V-model](theory/09_BAI_TAP.md) | Requirements → design → code → test → traceability |
 
-- [ESP32 Series Datasheet (PDF)](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf)
-- [ESP32 Technical Reference Manual (PDF)](https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf)
-- [ESP-IDF: Application Startup Flow](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/startup.html)
-- [ESP-IDF: Bootloader](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/bootloader.html)
-- [ESP-IDF: GPIO API](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html)
-- [Wokwi: Mô phỏng ESP-IDF](https://docs.wokwi.com/vscode/esp-idf)
+## Tài liệu gốc để tra cứu
 
-## Sau tuần 1, bạn cần giải thích được
+- [ESP32 Series Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf): pin, boot modes, CPU/memory, clock, electrical characteristics.
+- [ESP32 Technical Reference Manual](https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf): Chapter 3 (System and Memory), 6 (IO MUX/GPIO Matrix), 7 (Reset and Clock), 8 (Interrupt Matrix); các chương peripheral tương ứng.
+- [ESP-IDF Application Startup Flow](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/startup.html): reset đến `app_main()`.
+- [ESP-IDF Interrupt Allocation](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/intr_alloc.html).
+- [ESP-IDF FreeRTOS](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/freertos_idf.html).
 
-- MCU/SoC, board phát triển và module ESP32 khác nhau thế nào.
-- CPU, ROM, SRAM, Flash, peripheral và memory map có vai trò gì.
-- Đường khởi động mức cao: reset/ROM → bootloader → app startup → FreeRTOS main task → `app_main()`.
-- GPIO number của chip khác tên chân in trên board ra sao; pin mux chọn chức năng nào.
-- Vì sao GPIO chỉ là tín hiệu logic, không phải nguồn cấp tải tùy ý; LED cần điện trở hạn dòng.
+**Phạm vi chính xác:** tất cả địa chỉ trong lab là của ESP32 gốc (Xtensa LX6), không áp dụng cho ESP32-S3/C3 hay MCU khác. ESP-IDF vẫn cung cấp boot, scheduler và build; chỉ GPIO được điều khiển trực tiếp bằng register trong lab. Với sản phẩm thực tế, cân nhắc HAL/driver chính thức để tránh tranh chấp sở hữu peripheral và lỗi portability.
 
-## Các bài tiếp theo trong chủ đề
+## Bài đã có trước
 
-- Tuần 8: memory map, stack/heap, startup và linker.
-- Tuần 9: DMA/buffer ownership (liên kết với [`05_Interrupts_DMA_and_Concurrency`](../05_Interrupts_DMA_and_Concurrency/README.md)).
-- Dùng [`09_Projects`](../09_Projects/README.md) để tích hợp thành một sản phẩm có yêu cầu và bằng chứng kiểm thử.
+[`Week_01/README.md`](Week_01/README.md) là bài GPIO qua API ESP-IDF/Wokwi đã có. Hãy dùng nó **sau** lab thanh ghi để so sánh abstraction và đối chiếu output của hai cách điều khiển cùng một mạch.

@@ -1,5 +1,7 @@
 # Tuần 1 — Luồng thực thi MCU và GPIO output
 
+> Đây là bài GPIO **qua API ESP-IDF** được giữ để so sánh. Nếu học theo lộ trình Senior MCU, bắt đầu từ [module lý thuyết kiến trúc](../README.md), hoàn thành quiz và [driver thanh ghi](../register_gpio/README.md) trước khi dùng bài này.
+
 Tuần này đi thẳng vào MCU/peripheral, không ôn lại C. Kết quả cuối tuần là bạn build được firmware ESP-IDF, mô phỏng ESP32 DevKitC V4 trong Wokwi, điều khiển LED ngoài qua GPIO và giải thích được luồng từ `app_main()` đến chân GPIO.
 
 ## Board và project ảo

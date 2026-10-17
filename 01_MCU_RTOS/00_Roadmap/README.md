@@ -1,5 +1,7 @@
 # Lộ trình MCU và RTOS từ A đến Z
 
+**Nếu mục tiêu là Senior MCU Engineer và làm đầy đủ theo V-model:** bắt đầu tại [lộ trình 40 tuần](SENIOR_MCU_VMODEL_40_WEEKS.md), áp dụng [quy trình V-model](VMODEL_PROCESS.md), sau đó học [module kiến trúc MCU, thanh ghi và boot](../01_MCU_Architecture_and_Boot/README.md). [Bảng tool tự test](TOOLING_AND_SELF_TEST.md) cho biết dùng gì để chứng minh từng loại yêu cầu. Bảng 24 tuần dưới đây là lộ trình nền tảng cũ; lộ trình 40 tuần đi sâu hơn và có gate V-model.
+
 ## Kết quả cuối cùng
 
 Sau lộ trình này, bạn có thể đọc datasheet/reference manual, giải thích luồng boot và memory map, viết firmware C có module, dùng peripheral/interrupt, tạo ứng dụng RTOS an toàn hơn, debug lỗi timing/concurrency, và trình bày kiến trúc bằng sơ đồ + ADR + kết quả test.
@@ -10,7 +12,7 @@ Thời lượng gợi ý: **24 tuần, 8–12 giờ/tuần**. Nếu chỉ có 4�
 
 | Tuần | Chủ đề | Đầu ra bắt buộc |
 |---|---|---|
-| 1 | MCU architecture, boot/memory overview, GPIO output, ESP-IDF build flow | Đọc sơ đồ khối ESP32, vẽ boot flow, build và mô phỏng LED. Bài học: [`01_MCU_Architecture_and_Boot/Week_01`](../01_MCU_Architecture_and_Boot/Week_01/README.md) |
+| 1 | MCU architecture, boot/memory overview, GPIO output, ESP-IDF build flow | Bắt đầu [module kiến trúc MCU](../01_MCU_Architecture_and_Boot/README.md), hoàn tất lý thuyết rồi mới làm quiz/lab |
 | 2 | GPIO input, pull-up/down, button, debounce và state machine | Button đổi trạng thái LED; giải thích active-low và bounce |
 | 3 | Clock tree, hardware timer, periodic tick, PWM | Timer task-free tạo chu kỳ; đo period và duty cycle |
 | 4 | Interrupt controller, GPIO interrupt, priority và ISR rules | ISR ngắn gửi event; foreground xử lý event |
