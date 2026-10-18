@@ -11,6 +11,8 @@
 3. **Driver thanh ghi:** đọc [`register_gpio/README.md`](register_gpio/README.md), lần theo register map, build thư viện GPIO có input/output, pull, đọc mức, set/clear và deinit. Chạy Wokwi cùng bài test MMIO trên host.
 4. **Bài tập:** làm [`09_BAI_TAP.md`](theory/09_BAI_TAP.md), nộp bằng chứng theo V-model.
 
+**Tool miễn phí cho học phần này:** đến lúc viết driver, làm host fake-MMIO test bằng GCC/Clang native trước, sau đó build ESP-IDF và mô phỏng trên Wokwi đã có. [Bảng tool và gate theo tuần](../00_Roadmap/TOOLING_AND_SELF_TEST.md) giải thích thêm Unity/Ceedling, Cppcheck và ESP32 QEMU; không cần cài hết từ tuần 1.
+
 | Thứ tự | Nội dung | Đầu ra bắt buộc |
 |---|---|---|
 | 01 | [Kiến trúc MCU và các thanh ghi cần thiết](theory/01_CPU_SOC_KIEN_TRUC.md) | Sơ đồ CPU–bus–memory–GPIO–pad; sổ tay thanh ghi GPIO18 gồm địa chỉ, bit và ngữ nghĩa ghi |

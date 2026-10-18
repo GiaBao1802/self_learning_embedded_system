@@ -14,6 +14,8 @@ Học xong [nền tảng ESP32 và driver thanh ghi](../01_MCU_Architecture_and_
 
 Không cần mua đồng thời bốn board. Hãy tận dụng ESP32 + host unit test trước; board khác chỉ mua khi cần xác nhận thật về điện, CAN, timing, startup, watchdog hoặc debug. **Simulator/host test không thay thế silicon.** Tình trạng sản phẩm, giá, quyền tải SDK và giấy phép debug có thể thay đổi; kiểm tra trang hãng trước khi mua/cài.
 
+Lựa chọn mô phỏng miễn phí đã kiểm tra cho giai đoạn đầu: Wokwi cho ESP32; [Renode có mô hình Nucleo-H753ZI](https://github.com/renode/renode/releases) khi sang STM32H753, nhưng phải kiểm mỗi peripheral cần học. Với **đúng** S32K344/SPC584B/TC375, lộ trình chưa mặc định một simulator miễn phí mô phỏng đầy đủ; tiếp tục host fake-register test và ghi target verification là PENDING cho đến khi có board/mô hình được xác minh. Xem [bảng tool theo từng mốc](../00_Roadmap/TOOLING_AND_SELF_TEST.md).
+
 ## Các tệp trong module
 
 1. [Lọc kỹ năng trong ảnh tuyển dụng](00_SKILL_FILTER_FROM_JOB.md): học gì ngay, gì tùy vị trí, gì chưa cần.

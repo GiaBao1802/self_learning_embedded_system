@@ -13,9 +13,9 @@ Lộ trình 40 tuần này lấy ESP32 làm nền. Để học đúng các chip 
 | 3 | Clock tree, reset domain, boot ROM/stage2/app startup, linker/ELF/partition | Boot sequence, memory/clock diagram, `idf.py size` report |
 | 4 | Interrupt matrix, ISR, DMA, cache/coherency, bus contention | ISR/DMA state diagram và risk review |
 | 5 | Hoàn tất lý thuyết 01–06, quiz ≥85%, review driver requirements/design | Quiz có giải thích câu sai, requirement và test plan trước code |
-| 6 | Viết GPIO MMIO library, host fake MMIO test, Wokwi và bài tập 1–5 | Build, test log, demo, traceability; hardware gap liệt kê |
+| 6 | Viết GPIO MMIO library; chạy test bằng compiler C native trên PC, build ESP-IDF, mô phỏng Wokwi và làm bài tập 1–5 | `UT-01`…`UT-05` PASS/FAIL, `IT-01` LED/log, commit và traceability; điện/timing thật để PENDING |
 
-Tài liệu và lab cụ thể: [`01_MCU_Architecture_and_Boot`](../01_MCU_Architecture_and_Boot/README.md).
+Tài liệu và lab cụ thể: [`01_MCU_Architecture_and_Boot`](../01_MCU_Architecture_and_Boot/README.md). [Bộ tool miễn phí theo từng mốc](TOOLING_AND_SELF_TEST.md) cho biết tool nào cần dùng ngay, tool nào để sau.
 
 ## Giai đoạn 2 — Peripheral và real-time nền tảng (tuần 7–14)
 
@@ -53,10 +53,10 @@ Tài liệu và lab cụ thể: [`01_MCU_Architecture_and_Boot`](../01_MCU_Archi
 | 26 | Secure boot/Flash encryption/keys ở mức thiết kế | Threat model, key ownership, non-destructive test plan |
 | 27 | Brownout, power/sleep, startup/shutdown sequencing | Power-state diagram và bench measurement |
 | 28 | Logging, assertions, panic/core dump | Root-cause report từ fault injected |
-| 29 | Host unit test/mock register, boundary/error cases | Unit report và traceability coverage |
+| 29 | Host unit test/mock register, boundary/error cases; tổ chức test bằng Unity/Ceedling khi cần | Unit report và traceability coverage |
 | 30 | Target test/pytest-embedded, integration test | Test script, firmware/board matrix |
-| 31 | Static analysis/compiler warnings/format/UB review | Baseline findings + disposition |
-| 32 | GDB/OpenOCD/JTAG, trace/logic analyzer | Debug transcript, timing evidence |
+| 31 | Static analysis/compiler warnings/format/UB review với Cppcheck/clang-tidy | Baseline findings + disposition |
+| 32 | GDB trên ESP32 QEMU (tùy chọn), rồi OpenOCD/JTAG/logic analyzer khi có board | Debug transcript; timing/điện chỉ kết luận từ phép đo board thật |
 | 33 | Fault injection: stuck sensor, lost IRQ, queue full, reboot | Fault campaign report với expected/actual |
 | 34 | CI build/test/size, artifact retention | Pipeline, reproducible build notes, release gate |
 
