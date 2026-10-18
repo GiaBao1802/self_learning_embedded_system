@@ -11,6 +11,8 @@
 
 Sau phần lý thuyết, đọc [bản đồ kiến trúc](08_SO_SANH_KIEN_TRUC.md), làm câu **17–24** của [quiz](09_QUIZ_DA_CHIP.md), đối chiếu [đáp án](10_DAP_AN_QUIZ_DA_CHIP.md); rồi mới code.
 
+Ở tuần 5–7, dùng [bản đồ SPC5Studio/RLA/HAL và example trong IDE](11_THU_VIEN_SDK_MA_MAU.md) để đối chiếu generated config với RM0449; không mặc định có kho GitHub public chứa toàn bộ SPC5Studio SDK.
+
 ## Lịch 8 tuần
 
 | Tuần | Học/làm theo thứ tự | Bằng chứng |

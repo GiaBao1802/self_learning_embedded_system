@@ -2,6 +2,8 @@
 
 Đích của học phần là tự đọc datasheet/TRM để thiết kế, cài đặt và kiểm thử một driver thanh ghi nhỏ; giải thích được CPU, bộ nhớ, bus, clock, interrupt, peripheral và luồng boot. Thời lượng hợp lý: **4–6 tuần × 8–12 giờ/tuần**. Đây là nền tảng để đi tiếp RTOS; không có phần ôn cú pháp C.
 
+**Bắt đầu tại [Bài 01 — Kiến trúc MCU và các thanh ghi cần thiết](theory/01_CPU_SOC_KIEN_TRUC.md):** học block diagram, ba loại thanh ghi, memory map và bảng địa chỉ/bit GPIO18 trước khi sang các bài lý thuyết khác. Bài này chưa yêu cầu viết code.
+
 ## Đi theo đúng thứ tự
 
 1. **Lý thuyết:** đọc lần lượt toàn bộ mục 01–06 dưới đây. Mỗi mục có khái niệm, điều phải giải thích được và chỗ cần tra trong tài liệu chip.
@@ -11,7 +13,7 @@
 
 | Thứ tự | Nội dung | Đầu ra bắt buộc |
 |---|---|---|
-| 01 | [CPU, SoC và kiến trúc hệ thống](theory/01_CPU_SOC_KIEN_TRUC.md) | Sơ đồ CPU–bus–memory–peripheral; giải thích exception vs task |
+| 01 | [Kiến trúc MCU và các thanh ghi cần thiết](theory/01_CPU_SOC_KIEN_TRUC.md) | Sơ đồ CPU–bus–memory–GPIO–pad; sổ tay thanh ghi GPIO18 gồm địa chỉ, bit và ngữ nghĩa ghi |
 | 02 | [Thanh ghi, memory map và bus](theory/02_THANH_GHI_MEMORY_BUS.md) | Register map GPIO18, mô tả R/W, RO, WO, W1TS/W1TC |
 | 03 | [Clock, reset, boot và linker](theory/03_CLOCK_RESET_BOOT.md) | Boot flow và cây clock mức hệ thống, giải thích ELF/Flash |
 | 04 | [Interrupt, ISR, DMA](theory/04_NGAT_DMA.md) | Sơ đồ peripheral → interrupt matrix → CPU → ISR → task |
@@ -34,3 +36,5 @@
 ## Bài đã có trước
 
 [`Week_01/README.md`](Week_01/README.md) là bài GPIO qua API ESP-IDF/Wokwi đã có. Hãy dùng nó **sau** lab thanh ghi để so sánh abstraction và đối chiếu output của hai cách điều khiển cùng một mạch.
+
+Khi muốn đọc source thư viện hãng để hiểu driver bên dưới API, dùng [bản đồ ESP-IDF GPIO/LL, ví dụ chính hãng và bài lần theo register](../10_MCU_Families_and_Portability/11_THU_VIEN_SDK_MA_MAU.md). Đọc source đúng bản ESP-IDF v6.1 đã cài, không lấy file `master` làm bằng chứng cho version local.

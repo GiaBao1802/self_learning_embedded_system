@@ -35,3 +35,5 @@ Chọn tool theo câu hỏi cần trả lời. **Build pass** chỉ chứng minh
 Không cần mua mọi tool trước. Điểm bắt đầu đủ dùng là ESP-IDF + Wokwi + compiler native cho host test; board/logic analyzer chỉ cần khi đến yêu cầu có bằng chứng điện/timing.
 
 Khi chuyển họ chip, dùng [bảng chip/board/tool riêng](../10_MCU_Families_and_Portability/README.md). STM32CubeIDE/ST-LINK, NXP S32 Design Studio/debugger, SPC5Studio/PLS, AURIX Development Studio/miniWiggler là đường khởi đầu theo từng kit; TRACE32 là tùy chọn chuyên sâu khi có probe/license phù hợp. Tool host/CI/Doxygen hỗ trợ chung nhưng **không** thay thế target test.
+
+[Bản đồ thư viện/SDK chính hãng](../10_MCU_Families_and_Portability/11_THU_VIEN_SDK_MA_MAU.md) chỉ rõ source nào nên đọc cho ESP-IDF, STM32CubeH7, S32K3 RTD, SPC5Studio và AURIX iLLD; mỗi nguồn có bài tập lần API → register và bằng chứng V-model.

@@ -13,6 +13,8 @@
 
 Sau phần lý thuyết, đọc [bản đồ kiến trúc](08_SO_SANH_KIEN_TRUC.md), làm câu **9–16** của [quiz](09_QUIZ_DA_CHIP.md), đối chiếu [đáp án](10_DAP_AN_QUIZ_DA_CHIP.md); rồi mới code.
 
+Ở tuần 5–7, theo [bản đồ nguồn S32K3 RTD và ví dụ FlexCAN](11_THU_VIEN_SDK_MA_MAU.md); luôn khóa version RTD/S32DS và kiểm board/transceiver của ví dụ trước khi chạy.
+
 ## Lịch 8 tuần
 
 | Tuần | Học/làm theo thứ tự | Bằng chứng |

@@ -21,6 +21,7 @@ Không cần mua đồng thời bốn board. Hãy tận dụng ESP32 + host unit
 3. Bốn hướng dẫn riêng theo các link ở bảng trên: tài liệu hãng, thứ tự đọc, toolchain, lab và gate.
 4. [Bản đồ so sánh kiến trúc](08_SO_SANH_KIEN_TRUC.md) → [quiz 32 câu](09_QUIZ_DA_CHIP.md) → [đáp án](10_DAP_AN_QUIZ_DA_CHIP.md), chỉ làm quiz của họ chip sau khi đọc tài liệu của họ đó.
 5. [Capstone cùng một đặc tả trên nhiều chip](06_CROSS_CHIP_CAPSTONE.md): so sánh portability và hồ sơ review.
+6. [Thư viện/SDK và mã mẫu chính hãng](11_THU_VIEN_SDK_MA_MAU.md): đọc source theo tầng, biết ví dụ nào đúng board, version/quyền truy cập và cách tự kiểm.
 
 ## Cách đi không bị ngợp
 

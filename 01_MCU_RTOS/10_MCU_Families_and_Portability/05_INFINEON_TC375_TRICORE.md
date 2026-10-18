@@ -13,6 +13,8 @@
 
 Sau phần lý thuyết, đọc [bản đồ kiến trúc](08_SO_SANH_KIEN_TRUC.md), làm câu **25–32** của [quiz](09_QUIZ_DA_CHIP.md), đối chiếu [đáp án](10_DAP_AN_QUIZ_DA_CHIP.md); rồi mới code.
 
+Ở tuần 5–7, đi theo [bản đồ iLLD và AURIX code examples](11_THU_VIEN_SDK_MA_MAU.md); kiểm `Cpu0_Main.c` metadata của từng example trước khi dùng, đặc biệt exact device/board.
+
 ## Lịch 8 tuần
 
 | Tuần | Học/làm theo thứ tự | Bằng chứng |
